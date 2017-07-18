@@ -3,6 +3,7 @@
  */
 import React , {Component} from 'react';
 import CategoriesTable from './CategoriesTable';
+import RemoveCategories from './RemoveCategories';
 
 export default class Categories extends Component{
 
@@ -17,7 +18,7 @@ export default class Categories extends Component{
                                 <label for="categorie_name">Nombre</label>
                         </div>
                     </div>
-                    <div classNameName="row">
+                    <div className="row">
                         <div className="input-field col s12">
                             <textarea id="descripcion" className="materialize-textarea"></textarea>
                             <label for="descripcion">Descripción</label>
@@ -26,7 +27,7 @@ export default class Categories extends Component{
                     <a className="waves-effect waves-light btn black">button</a>
                 </div>
                 <div className="col s12 m8 l8">
-                    <CategoriesTable/>
+                    <CategoriesTable action={<RemoveCategories/>} />
                 </div>
             </div>
         );
