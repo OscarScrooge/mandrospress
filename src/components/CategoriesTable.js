@@ -7,6 +7,8 @@ import React, {Component} from 'react';
 
 export default class CategoriesTable extends Component{
 
+
+
     render(){
         return(
             <div className="view_categories">
@@ -23,21 +25,24 @@ export default class CategoriesTable extends Component{
                         <td>Categoria 1</td>
                         <td>Desc. 1</td>
                         <td>
-                            <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>
+                            {this.props.action}
+                            {/*<a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>*/}
                         </td>
                     </tr>
                     <tr>
                         <td>Categoria 2</td>
                         <td>Desc. 2</td>
                         <td>
-                            <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>
+                            {this.props.action}
+                            {/*<a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>*/}
                         </td>
                     </tr>
                     <tr>
                         <td>Categoria 3</td>
                         <td>Desc. 3</td>
                         <td>
-                            <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>
+                            {this.props.action}
+                            {/*<a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>*/}
                         </td>
                     </tr>
                     </tbody>

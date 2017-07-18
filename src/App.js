@@ -18,7 +18,7 @@ class App extends Component {
     changeState(component){
         this.setState({
             mainComponent : component
-        }).bind(this);
+        });
     }
 
 
