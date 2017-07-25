@@ -25,24 +25,21 @@ export default class CategoriesTable extends Component{
                         <td>Categoria 1</td>
                         <td>Desc. 1</td>
                         <td>
-                            {this.props.action}
-                            {/*<a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>*/}
+                            <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>
                         </td>
                     </tr>
                     <tr>
                         <td>Categoria 2</td>
                         <td>Desc. 2</td>
                         <td>
-                            {this.props.action}
-                            {/*<a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>*/}
+                            <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>
                         </td>
                     </tr>
                     <tr>
                         <td>Categoria 3</td>
                         <td>Desc. 3</td>
                         <td>
-                            {this.props.action}
-                            {/*<a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>*/}
+                            <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>
                         </td>
                     </tr>
                     </tbody>

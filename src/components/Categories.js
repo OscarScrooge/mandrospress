@@ -3,13 +3,13 @@
  */
 import React , {Component} from 'react';
 import CategoriesTable from './CategoriesTable';
-import RemoveCategories from './RemoveCategories';
 
 export default class Categories extends Component{
 
     render(){
         return(
             <div className="categories">
+                <div className="center"><h3>Categorias</h3></div>
                 <div className="col s12 m4 l4">
                     Añadir nueva categoria
                     <div className="row">
@@ -24,10 +24,10 @@ export default class Categories extends Component{
                             <label for="descripcion">Descripción</label>
                         </div>
                     </div>
-                    <a className="waves-effect waves-light btn black">button</a>
+                    <a className="waves-effect waves-light btn black">Aceptar</a>
                 </div>
                 <div className="col s12 m8 l8">
-                    <CategoriesTable action={<RemoveCategories/>} />
+                    <CategoriesTable/>
                 </div>
             </div>
         );

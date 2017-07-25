@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import SideNav from './components/SideNav';
+import '../public/css/viewfinder.css';
+import '../public/css/materialize.min.css';
+import '../public/css/sideNav.css';
+import '../public/css/categories.css';
+import '../public/js/materialize.min';
+
 
 class App extends Component {
 
@@ -11,9 +17,6 @@ class App extends Component {
         this.changeState = this.changeState.bind(this);
     }
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     return (nextProps.mainComponent !== this.props.mainComponent);
-    // }
 
     changeState(component){
         this.setState({
