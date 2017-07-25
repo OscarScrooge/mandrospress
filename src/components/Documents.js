@@ -11,6 +11,9 @@ import UploadedFilesList from './UploadedFilesList';
 export default class Documents extends Component{
 
 
+    handleClick(){
+    }
+
 
    render(){
 
@@ -21,7 +24,7 @@ export default class Documents extends Component{
                 <UploadedFilesList/>
                 <div>
                   <AddRemoveFromCategories/>
-                    <a className="waves-effect waves-light btn">Añadir</a>
+                    <a className="waves-effect waves-light btn" onClick={(e)=>this.handleClick()}>Añadir</a>
                     <a className="waves-effect waves-light btn">Eliminar</a>
                 </div>
                 <div className="col s12">

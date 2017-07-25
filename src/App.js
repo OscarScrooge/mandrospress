@@ -5,7 +5,7 @@ import '../public/css/materialize.min.css';
 import '../public/css/sideNav.css';
 import '../public/css/categories.css';
 import '../public/js/materialize.min';
-
+import '../public/js/createFiles';
 
 class App extends Component {
 

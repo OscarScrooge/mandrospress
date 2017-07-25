@@ -15,13 +15,13 @@ export default class Categories extends Component{
                     <div className="row">
                         <div className="input-field">
                             <input  id="categorie_name" type="text" className="validate"/>
-                                <label for="categorie_name">Nombre</label>
+                                <label htmlFor="categorie_name">Nombre</label>
                         </div>
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
                             <textarea id="descripcion" className="materialize-textarea"></textarea>
-                            <label for="descripcion">Descripción</label>
+                            <label htmlFor="descripcion">Descripción</label>
                         </div>
                     </div>
                     <a className="waves-effect waves-light btn black">Aceptar</a>
