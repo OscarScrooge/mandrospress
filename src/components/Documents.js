@@ -24,6 +24,10 @@ export default class Documents extends Component{
                 <UploadedFilesList/>
                 <div>
                   <AddRemoveFromCategories/>
+                    /**
+                     * En el evento onClick pretendo se ejecuten funciones js, pero no he podido ejecutarlas,
+                     * en teoria no deberia haber problemas por que react es javascript.
+                     */
                     <a className="waves-effect waves-light btn" onClick={(e)=>this.handleClick()}>Añadir</a>
                     <a className="waves-effect waves-light btn">Eliminar</a>
                 </div>
