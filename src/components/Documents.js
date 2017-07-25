@@ -25,7 +25,7 @@ export default class Documents extends Component{
                     <a className="waves-effect waves-light btn">Eliminar</a>
                 </div>
                 <div className="col s12">
-                     <FileListTable/>
+                     <FileListTable titleTable="Archivo"/>
                     <a className="waves-effect waves-light btn">Eliminar</a>
                 </div>
 

@@ -18,7 +18,7 @@ export default class FileListTable extends Component{
                             <input type="checkbox" id="test8" disabled="disabled"/>
                             <label htmlFor="test8"></label>
                         </th>
-                        <th>Archivo</th>
+                        <th>{this.props.titleTable}</th>
                         <th>Categorias</th>
                     </tr>
                     </thead>
