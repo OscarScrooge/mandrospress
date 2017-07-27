@@ -7,11 +7,12 @@ import UploadFiles from './UploadFiles';
 import AddRemoveFromCategories from './AddRemoveFromCategorie';
 import FileListTable from './FileListTable';
 import UploadedFilesList from './UploadedFilesList';
+import js from '../../public/js/createFiles';
 
 export default class Documents extends Component{
 
-
     handleClick(){
+        js.functions.createContentFolder();
     }
 
 
@@ -24,10 +25,7 @@ export default class Documents extends Component{
                 <UploadedFilesList/>
                 <div>
                   <AddRemoveFromCategories/>
-                    /**
-                     * En el evento onClick pretendo se ejecuten funciones js, pero no he podido ejecutarlas,
-                     * en teoria no deberia haber problemas por que react es javascript.
-                     */
+
                     <a className="waves-effect waves-light btn" onClick={(e)=>this.handleClick()}>Añadir</a>
                     <a className="waves-effect waves-light btn">Eliminar</a>
                 </div>

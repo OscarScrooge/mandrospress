@@ -6,7 +6,9 @@
     "jquery": "^3.2.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-load-script": "0.0.6"
+    "react-load-script": "0.0.6",
+    "react-router": "^4.1.2",
+    "react-routing": "0.0.7"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"
