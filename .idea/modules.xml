@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/mandmin.iml" filepath="$PROJECT_DIR$/.idea/mandmin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mandmin_server/mandmin_server.iml" filepath="$PROJECT_DIR$/mandmin_server/mandmin_server.iml" />
     </modules>
   </component>
 </project>
