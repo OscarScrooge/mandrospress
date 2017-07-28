@@ -5,7 +5,7 @@ import '../public/css/materialize.min.css';
 import '../public/css/sideNav.css';
 import '../public/css/categories.css';
 import '../public/js/materialize.min';
-import '../public/js/createFiles';
+import proxy from '../proxy/api';
 
 class App extends Component {
 
@@ -15,6 +15,10 @@ class App extends Component {
             mainComponent :  ''
         };
         this.changeState = this.changeState.bind(this);
+    }
+
+    componentWillMount(){
+        proxy.call.createContentFolder();
     }
 
 

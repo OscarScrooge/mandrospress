@@ -7,12 +7,11 @@ import UploadFiles from './UploadFiles';
 import AddRemoveFromCategories from './AddRemoveFromCategorie';
 import FileListTable from './FileListTable';
 import UploadedFilesList from './UploadedFilesList';
-import js from '../../public/js/createFiles';
 
 export default class Documents extends Component{
 
     handleClick(){
-        js.functions.createContentFolder();
+
     }
 
 
