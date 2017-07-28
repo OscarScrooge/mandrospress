@@ -6,6 +6,13 @@
  * Date: 7/28/17
  * Time: 12:13 PM
  */
+
+header('Access-Control-Allow-Origin: *');
+
+use PDO;
+
+include './DataBase.php';
+
 class ConnectionDB
 {
     private $host;
@@ -13,6 +20,7 @@ class ConnectionDB
     private $password;
     private $dbName;
     private $manager;
+    private $connection;
 
    function __construct($host,$manager,$dbName,$username,$password){
 
@@ -22,7 +30,7 @@ class ConnectionDB
        $this->dbName = $dbName;
        $this->manager = $manager;
 
-       $this->connect();
+       return $this->connect($this->getHost(),$this->getManager(),$this->getDbName(),$this->getUsername(),$this->getPassword());
 
    }
 
@@ -107,21 +115,44 @@ class ConnectionDB
     }
 
 
+    /**
+     * @param $host
+     * @param $manager
+     * @param $dbName
+     * @param $username
+     * @param $password
+     * @return mixed
+     */
+    public function connect($host, $manager, $dbName, $username, $password)
+    {
+        try {
+            $this->connection = new PDO($manager.":host=".$host.";dbname=".$dbName,$username, $password);
+            // set the PDO error mode to exception
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            echo "ok connection DB";
+        }
+        catch(PDOException $e)
+        {
+            echo "Connection failed: " . $e->getMessage();
+            return null;
+        }
 
-   function connect(){
+    }
 
-       try {
-           $conn = new PDO($this->getManager().":host=;".$this->getHost()."=myDB",$this->getUsername(), $this->getPassword());
-           // set the PDO error mode to exception
-           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-           echo "ok";
-           return true;
-       }
-       catch(PDOException $e)
-       {
-           echo "Connection failed: " . $e->getMessage();
-           return false;
-       }
+    /**
+     * @return mixed
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
 
-   }
+
+
+    /**
+     * @return string
+     */
+    public function getMessage(){
+       return 'hola mensaje';
+    }
 }

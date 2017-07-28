@@ -8,7 +8,11 @@ import api from '../../proxy/api';
 export default class Categories extends Component{
 
     handleSubmit(event){
-        api.call.createCategorie(this);
+       event.preventDefault();
+    }
+
+    componentDidMount(){
+        api.call.createCategorie();
     }
 
     render(){
@@ -17,7 +21,7 @@ export default class Categories extends Component{
                 <div className="center"><h3>Categorias</h3></div>
                 <div className="col s12 m4 l4">
                     Añadir nueva categoria
-                    <form className="" onSubmit={this.handleSubmit}>
+                    <form className="categorie_form" onSubmit={this.handleSubmit}>
                     <div className="row">
                         <div className="input-field">
                             <input  id="categorie_name" type="text" className="validate" name="categorie_name"/>
@@ -30,7 +34,7 @@ export default class Categories extends Component{
                             <label htmlFor="description">Descripción</label>
                         </div>
                     </div>
-                        <button className="btn waves-effect waves-light" type="submit" name="action">Aceptar
+                        <button className="btn waves-effect waves-light" type="submit" name="action">Agregar
                         </button>
                     </form>
                 </div>

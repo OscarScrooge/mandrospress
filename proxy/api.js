@@ -32,9 +32,31 @@ var call ={
      *
      * @param form
      */
-    createCategorie: function (form) {
-        var data = $(form).serialize();
-        this.ajax
+    createCategorie: function () {
+
+        $('form.categorie_form').submit(function (e) {
+
+            var form =$(this).serializeArray();
+            var dataPutRequest='';
+
+            form.forEach(function (element) {
+               dataPutRequest+=element.value+",";
+            });
+            var dataPut = dataPutRequest.substr(0,(dataPutRequest.length)-1);
+
+            var data = {
+                dataPutRequest: dataPut,
+                type: 'insert',
+                resultNumber: 0,
+                section: 'categories'
+            };
+
+            var url= 'http://localhost/mandmin/server/dataBase/queries/QueriesManager.php';
+
+            call.ajax(JSON.stringify(data),url,post);
+
+        } );
+
     },
 
     /**
