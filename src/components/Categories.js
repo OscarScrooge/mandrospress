@@ -4,15 +4,36 @@
 import React , {Component} from 'react';
 import CategoriesTable from './CategoriesTable';
 import api from '../../proxy/api';
-
+let thisComponent;
 export default class Categories extends Component{
 
+
+    constructor(){
+        super();
+        thisComponent = this;
+        this.state = {
+            entriesCategoriesTable: []
+        };
+        this.changeCategoriesTableState = this.changeCategoriesTableState.bind(this);
+    }
+
+    changeCategoriesTableState(data){
+        this.setState({
+            entriesCategoriesTable : data
+        });
+    }
+
     handleSubmit(event){
-       event.preventDefault();
+        event.preventDefault();
+        api.call.createCategorie(thisComponent.changeCategoriesTableState);
     }
 
     componentDidMount(){
-        api.call.createCategorie();
+        api.call.getCategories(this.changeCategoriesTableState);
+    }
+
+    deletedCategorie(){
+        api.call.getCategories(thisComponent.changeCategoriesTableState);
     }
 
     render(){
@@ -39,7 +60,7 @@ export default class Categories extends Component{
                     </form>
                 </div>
                 <div className="col s12 m8 l8">
-                    <CategoriesTable/>
+                    <CategoriesTable categories={this.state.entriesCategoriesTable} deleteCategorieClick={this.deletedCategorie}/>
                 </div>
             </div>
         );

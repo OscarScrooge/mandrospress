@@ -3,20 +3,18 @@
 /**
  * Created by IntelliJ IDEA.
  * User: oscar
- * Date: 7/28/17
- * Time: 2:40 PM
+ * Date: 8/1/17
+ * Time: 1:20 PM
  */
-
-header('Access-Control-Allow-Origin: *');
-include_once '../connection/ConnectionDB.php';
-
-class Insert
+class Delete
 {
+
     private $type;
     private $dataPut;
     private $resultNumber;
     private $section;
     private $connectionDB;
+    private $condition;
 
     /**
      * Insert constructor.
@@ -26,51 +24,45 @@ class Insert
      * @param $section
      * @param $connectionDB
      */
-    function __construct($type,$dataPut,$resultNumber,$section,$connectionDB)
+    function __construct($type,$dataPut,$resultNumber,$section,$condition,$connectionDB)
     {
         $this->type = $type;
         $this->dataPut = $dataPut;
         $this->resultNumber = $resultNumber;
         $this->section = $section;
         $this->connectionDB = $connectionDB;
+        $this->condition = $condition;
 
-        $this->doQuery($this->getType(),$this->getDataPut(),$this->getResultNumber(),$this->getSection(),$this->getConnectionDB());
+        $this->excecuteQuery($this->getType(),$this->getDataPut(),$this->getResultNumber(),$this->getSection(),$this->getCondition(),$this->getConnectionDB());
 
     }
 
     /**
      * @param $type
-     * @param $dataPut
+     * @param $dataDelete
      * @param $resultNumber
      * @param $section
      * @param $conn
      */
-    private function doQuery($type,$dataPut,$resultNumber,$section,$conn){
+    private function excecuteQuery($type,$dataDelete,$resultNumber,$section,$condition,$conn){
 
-        $pieces = explode(",", $dataPut);
+        $pieces = explode(",", $dataDelete);
         $i=1;
-        $insertValues="";
+        $values="";
 
         for($k=0;$k<sizeof($pieces);$k++){
-            $insertValues.="?,";
+            $values.="?,";
         }
-        $insertValues = substr( $insertValues , 0 , -1);
+        $deleteValues = substr( $values , 0 , -1);
 
-        $query= "insert into mandmin.".$section." (categorie,description) values (".$insertValues.")";
-
+        $query= "delete from mandmin.".$section." where ".$condition;
 
         try{
-            $prep = array(sizeof($pieces));
 
             $stmt = $conn->getConnection()->prepare($query);
-            foreach ($pieces as $value){
-                $stmt->bindParam($i,$prep[$i]);
-                $prep[$i]=$value;
-                $i++;
-            }
             $stmt->execute();
         }catch (Exception $e){
-          echo  $e->getMessage();
+            echo  $e->getMessage();
         }finally{
             $conn=null;
         }
@@ -118,6 +110,14 @@ class Insert
     public function getConnectionDB()
     {
         return $this->connectionDB;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCondition()
+    {
+        return $this->condition;
     }
 
 

@@ -12,8 +12,6 @@ import $ from 'jquery';
 export default class SideNav extends Component{
 
 
-
-
     componentDidMount(){
         $(".button-collapse").sideNav();
     }

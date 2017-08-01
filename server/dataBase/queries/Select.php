@@ -4,18 +4,19 @@
  * Created by IntelliJ IDEA.
  * User: oscar
  * Date: 7/28/17
- * Time: 2:40 PM
+ * Time: 6:29 PM
  */
 
 header('Access-Control-Allow-Origin: *');
 include_once '../connection/ConnectionDB.php';
-
-class Insert
+class Select
 {
+
     private $type;
     private $dataPut;
     private $resultNumber;
     private $section;
+    private $condition;
     private $connectionDB;
 
     /**
@@ -26,15 +27,16 @@ class Insert
      * @param $section
      * @param $connectionDB
      */
-    function __construct($type,$dataPut,$resultNumber,$section,$connectionDB)
+    function __construct($type,$dataPut,$resultNumber,$section,$condition,$connectionDB)
     {
         $this->type = $type;
         $this->dataPut = $dataPut;
         $this->resultNumber = $resultNumber;
         $this->section = $section;
+        $this->condition = $condition;
         $this->connectionDB = $connectionDB;
 
-        $this->doQuery($this->getType(),$this->getDataPut(),$this->getResultNumber(),$this->getSection(),$this->getConnectionDB());
+        $this->doQuery($this->getType(),$this->getDataPut(),$this->getResultNumber(),$this->getSection(),$this->getCondition(),$this->getConnectionDB());
 
     }
 
@@ -45,32 +47,28 @@ class Insert
      * @param $section
      * @param $conn
      */
-    private function doQuery($type,$dataPut,$resultNumber,$section,$conn){
+    private function doQuery($type,$dataPut,$resultNumber,$section,$condition,$conn){
 
-        $pieces = explode(",", $dataPut);
-        $i=1;
-        $insertValues="";
 
-        for($k=0;$k<sizeof($pieces);$k++){
-            $insertValues.="?,";
+        if($condition!==''){
+            $condition.=' where '.$condition;
         }
-        $insertValues = substr( $insertValues , 0 , -1);
 
-        $query= "insert into mandmin.".$section." (categorie,description) values (".$insertValues.")";
-
+        $query= "select ".$dataPut." from mandmin.".$section." ".$condition;
 
         try{
-            $prep = array(sizeof($pieces));
 
             $stmt = $conn->getConnection()->prepare($query);
-            foreach ($pieces as $value){
-                $stmt->bindParam($i,$prep[$i]);
-                $prep[$i]=$value;
-                $i++;
-            }
             $stmt->execute();
+            $datos = $stmt->fetchAll();
+            echo $jsonData = json_encode($datos); ;
+//            while( $datos = $stmt->fetch() ){
+//                array_push($array,$datos);
+//                echo $datos['categorie'] . '<br />';
+//            }
+
         }catch (Exception $e){
-          echo  $e->getMessage();
+            echo  $e->getMessage();
         }finally{
             $conn=null;
         }
@@ -120,7 +118,13 @@ class Insert
         return $this->connectionDB;
     }
 
-
-
+    /**
+     * @return mixed
+     */
+    public function getCondition()
+    {
+        return $this->condition;
+    }
 
 }
+

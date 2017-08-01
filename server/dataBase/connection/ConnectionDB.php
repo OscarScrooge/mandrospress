@@ -129,7 +129,7 @@ class ConnectionDB
             $this->connection = new PDO($manager.":host=".$host.";dbname=".$dbName,$username, $password);
             // set the PDO error mode to exception
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "ok connection DB";
+//            echo "ok connection DB";
         }
         catch(PDOException $e)
         {

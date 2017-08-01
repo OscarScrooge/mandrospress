@@ -11,6 +11,8 @@ header('Access-Control-Allow-Origin: *');
 
 include_once '../connection/ConnectionDB.php';
 include './Insert.php';
+include './Select.php';
+include './Delete.php';
 
 class QueriesManager
 {
@@ -24,16 +26,27 @@ class QueriesManager
     private $dataPutRequest;
     private $resultNumber;
     private $section;
+    private $condition;
     private $conn;
 
-    function __construct($type,$dataPutRequest,$resultNumber,$section)
+    /**
+     * QueriesManager constructor.
+     * @param $type
+     * @param $dataPutRequest
+     * @param $resultNumber
+     * @param $section
+     * @param $condition
+     */
+    function __construct($type,$dataPutRequest,$resultNumber,$section,$condition)
     {
 
         $this->type=$type;
         $this->dataPutRequest=$dataPutRequest;
         $this->resultNumber=$resultNumber;
         $this->section=$section;
+        $this->condition=$condition;
         $this->dbconnection();
+
         switch (strtolower($type)){
 
             case 'insert':
@@ -41,6 +54,20 @@ class QueriesManager
                     strtolower($this->getDataPutRequest()),
                     strtolower($this->getResultNumber()),
                     strtolower($this->getSection()));
+                break;
+            case 'select':
+                $this->select(strtolower($this->getType()),
+                    strtolower($this->getDataPutRequest()),
+                    strtolower($this->getResultNumber()),
+                    strtolower($this->getSection()),
+                    strtolower($this->getCondition()));
+                break;
+            case 'delete':
+                $this->delete(strtolower($this->getType()),
+                    strtolower($this->getDataPutRequest()),
+                    strtolower($this->getResultNumber()),
+                    strtolower($this->getSection()),
+                    strtolower($this->getCondition()));
                 break;
             default:
                 echo "Defaul Case";
@@ -52,13 +79,39 @@ class QueriesManager
 
     }
 
-    function insert($type,$dataPutRequest,$resultNumber,$section){
-
+    /**
+     * @param $type
+     * @param $dataPutRequest
+     * @param $resultNumber
+     * @param $section
+     */
+    private function insert($type,$dataPutRequest,$resultNumber,$section){
         $insert = new Insert($type,$dataPutRequest,$resultNumber,$section,$this->getConn());
-
     }
 
-    function dbconnection(){
+    /**
+     * @param $type
+     * @param $dataPutRequest
+     * @param $resultNumber
+     * @param $section
+     * @param $condition
+     */
+     private function select($type,$dataPutRequest,$resultNumber,$section,$condition){
+        $select = new Select($type,$dataPutRequest,$resultNumber,$section,$condition,$this->getConn());
+    }
+
+    /**
+     * @param $type
+     * @param $dataPutRequest
+     * @param $resultNumber
+     * @param $section
+     * @param $condition
+     */
+    private function delete($type,$dataPutRequest,$resultNumber,$section,$condition){
+        $delete = new Delete($type,$dataPutRequest,$resultNumber,$section,$condition,$this->getConn());
+    }
+
+    private function  dbconnection(){
         $this->conn=new ConnectionDB("localhost","mysql","mandmin","root","admin");
     }
 
@@ -134,8 +187,24 @@ class QueriesManager
         $this->section = $section;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCondition()
+    {
+        return $this->condition;
+    }
+
+
+
 }
 $getData = file_get_contents("php://input");
 $data= json_decode($getData);
 //
-$manager = new QueriesManager($data->{'type'},$data->{'dataPutRequest'},$data->{'resultNumber'},$data->{'section'});
+$manager = new QueriesManager(
+    $data->{'type'},
+    $data->{'dataPutRequest'},
+    $data->{'resultNumber'},
+    $data->{'section'},
+    $data->{'condition'}
+    );

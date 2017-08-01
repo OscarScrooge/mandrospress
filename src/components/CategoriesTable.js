@@ -3,11 +3,13 @@
  */
 
 import React, {Component} from 'react';
-
+import apiDelete from '../../proxy/apiDelete';
 
 export default class CategoriesTable extends Component{
 
-
+    handleClick(id){
+        apiDelete.delete.categorie(id,this.props.deleteCategorieClick);
+    }
 
     render(){
         return(
@@ -21,27 +23,16 @@ export default class CategoriesTable extends Component{
                     </thead>
 
                     <tbody>
-                    <tr>
-                        <td>Categoria 1</td>
-                        <td>Desc. 1</td>
+                    {this.props.categories.map((entry) => <tr key={entry.id} id={entry.id}>
+                        <td>{entry.categorie}</td>
+                        <td>{entry.description}</td>
                         <td>
-                            <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>
+                            <a className="btn-floating btn-large waves-effect waves-light red" onClick={(e)=>this.handleClick(entry.id)}>
+                                <i className="material-icons">clear</i>
+                            </a>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>Categoria 2</td>
-                        <td>Desc. 2</td>
-                        <td>
-                            <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Categoria 3</td>
-                        <td>Desc. 3</td>
-                        <td>
-                            <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">clear</i></a>
-                        </td>
-                    </tr>
+                    </tr>)}
+
                     </tbody>
                 </table>
             </div>

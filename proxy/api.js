@@ -1,7 +1,7 @@
 
 const post='POST';
 const get='GET';
-const put='PUT';
+const urlQueriesManager = 'http://localhost/mandmin/server/dataBase/queries/QueriesManager.php';
 
 /**
  *
@@ -12,7 +12,7 @@ var call ={
     /**
      * function()
      */
-    createContentFolder: function () {
+    createContentFolder: function (callBack) {
 
         var url= 'http://localhost/mandmin/server/files/CreateFolder.php';
         /**
@@ -26,37 +26,98 @@ var call ={
             recursivePermissions: 'true'
         };
 
-        this.ajax(JSON.stringify(data),url,post);
+        var object = {
+            type: post,
+            crossDomain: true,
+            url: url,
+            data: JSON.stringify(data)
+        };
+
+        this.ajax(object).then(function resolve(data) {
+            console.log(data);
+        },function reject(reason) {
+            console.log('algo salio mal');
+            console.log(reason);
+        });
     },
     /**
      *
      * @param form
      */
-    createCategorie: function () {
+    createCategorie: function (callBack) {
 
-        $('form.categorie_form').submit(function (e) {
 
-            var form =$(this).serializeArray();
-            var dataPutRequest='';
-
-            form.forEach(function (element) {
-               dataPutRequest+=element.value+",";
-            });
-            var dataPut = dataPutRequest.substr(0,(dataPutRequest.length)-1);
-
+            var form =$('.categorie_form').serializeArray();
+            var dataPut = call.managerData(form);
             var data = {
                 dataPutRequest: dataPut,
                 type: 'insert',
                 resultNumber: 0,
-                section: 'categories'
+                section: 'categories',
+                condition:''
             };
+            var object = {
+                type: post,
+                crossDomain: true,
+                url: urlQueriesManager,
+                data: JSON.stringify(data)
+            };
+            call.ajax(object).then(function resolve(data) {
+                call.getCategories(callBack);
+                $('.categorie_form')[0].reset();
+            },function reject(reason) {
+                console.log('algo salio mal');
+                console.log(reason);
+            });
 
-            var url= 'http://localhost/mandmin/server/dataBase/queries/QueriesManager.php';
+    },
 
-            call.ajax(JSON.stringify(data),url,post);
 
-        } );
+    /**
+     * function()
+     */
+    getCategories: function(callBack){
 
+        var dataRequest = {value:'*'};
+        var array = [dataRequest];
+
+        var request = call.managerData(array);
+
+        var data ={
+            dataPutRequest: request,
+            type: 'select',
+            resultNumber: 0,
+            section:'categories',
+            conditions:''
+        };
+
+        var object = {
+            type: post,
+            crossDomain: true,
+            url: urlQueriesManager,
+            data: JSON.stringify(data)
+        };
+
+        this.ajax(object).then(function resolve(data) {
+            callBack(JSON.parse(data));
+        },function reject(reason) {
+            console.log('algo salio mal');
+            console.log(reason);
+        });
+    },
+    /**
+     *
+     * @param array
+     * @returns {string}
+     */
+    managerData: function (array) {
+
+        var dataPutRequest='';
+        array.forEach(function (element) {
+            dataPutRequest+=element.value+",";
+        });
+
+        return dataPutRequest.substr(0,(dataPutRequest.length)-1);
     },
 
     /**
@@ -65,55 +126,18 @@ var call ={
      * @param url
      * @param type
      */
-    ajax: function (data, url, type) {
+    ajax: function (object) {
 
-        $.ajax({
-            type: type,
-            crossDomain: true,
-            url: url,
-            data: data
-        }).done(function (done) {
-            console.log(done);
-            return done;
-        }).fail(function ( jqXHR, textStatus, errorThrown) {
-            if (jqXHR.status === 0) {
-
-                console.log('Not connect: Verify Network.');
-
-            } else if (jqXHR.status === 404) {
-
-                console.log('Requested page not found [404]');
-
-            } else if (jqXHR.status === 500) {
-
-                console.log('Internal Server Error [500].');
-
-            } else if (textStatus === 'parsererror') {
-
-                console.log('Requested JSON parse failed.');
-
-            } else if (textStatus === 'timeout') {
-
-                console.log('Time out error.');
-
-            } else if (textStatus === 'abort') {
-
-                console.log('Ajax request aborted.');
-
-            } else {
-
-                alert('Uncaught Error: ' + jqXHR.responseText);
-
-            }
-
-            return 'false';
-
+        return new Promise(function (resolve,reject) {
+            $.ajax(object).done(resolve).fail(reject);
         });
 
+
     }
+
 };
 
 module.exports = {
-    call: call
+    call: call,
 };
 
