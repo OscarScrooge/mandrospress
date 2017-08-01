@@ -48,6 +48,8 @@ var call ={
 
 
             var form =$('.categorie_form').serializeArray();
+           console.log(form);
+           if(form[0].value){
             var dataPut = call.managerData(form);
             var data = {
                 dataPutRequest: dataPut,
@@ -65,10 +67,15 @@ var call ={
             call.ajax(object).then(function resolve(data) {
                 call.getCategories(callBack);
                 $('.categorie_form')[0].reset();
+                $('.err').hide();
             },function reject(reason) {
                 console.log('algo salio mal');
                 console.log(reason);
             });
+
+           }else{
+              $('.err').show();
+           }
 
     },
 

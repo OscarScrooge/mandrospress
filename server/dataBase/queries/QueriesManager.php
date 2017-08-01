@@ -112,7 +112,7 @@ class QueriesManager
     }
 
     private function  dbconnection(){
-        $this->conn=new ConnectionDB("localhost","mysql","mandmin","root","admin");
+
     }
 
     /**

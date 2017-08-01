@@ -4,6 +4,8 @@
 import React , {Component} from 'react';
 import CategoriesTable from './CategoriesTable';
 import api from '../../proxy/api';
+import $ from 'jquery';
+
 let thisComponent;
 export default class Categories extends Component{
 
@@ -30,6 +32,7 @@ export default class Categories extends Component{
 
     componentDidMount(){
         api.call.getCategories(this.changeCategoriesTableState);
+        $('.err').hide();
     }
 
     deletedCategorie(){
@@ -41,6 +44,7 @@ export default class Categories extends Component{
             <div className="categories">
                 <div className="center"><h3>Categorias</h3></div>
                 <div className="col s12 m4 l4">
+                    <div className="err red-text"><h6>El nombre de la categoria es oligatorio</h6></div>
                     Añadir nueva categoria
                     <form className="categorie_form" onSubmit={this.handleSubmit}>
                     <div className="row">

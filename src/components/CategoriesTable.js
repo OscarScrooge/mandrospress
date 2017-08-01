@@ -27,9 +27,9 @@ export default class CategoriesTable extends Component{
                         <td>{entry.categorie}</td>
                         <td>{entry.description}</td>
                         <td>
-                            <a className="btn-floating btn-large waves-effect waves-light red" onClick={(e)=>this.handleClick(entry.id)}>
-                                <i className="material-icons">clear</i>
-                            </a>
+
+                                <i onClick={(e)=>this.handleClick(entry.id)} className="small material-icons waves-effect waves-light">delete</i>
+
                         </td>
                     </tr>)}
 
