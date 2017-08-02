@@ -4,24 +4,51 @@
 
 import React, {Component} from 'react';
 import $ from 'jquery';
+import uid from 'uid';
+import api from '../../proxy/api';
 
 export default class AddRemoveFromCategorie extends Component{
 
-    componentDidMount(){
+    constructor(props){
+        super(props);
+        this.state = {
+            categoriesList: []
+        };
+        this.getCatList = this.getCatList.bind(this);
+    }
+
+    getCatList(data){
+        this.setState(
+            {
+                categoriesList: data
+            }
+            ,this.initializeSelect);
+    }
+
+    initializeSelect(){
         $('select').material_select();
     }
+    componentDidMount(){
+        api.call.getCategories(this.getCatList);
+    }
+
+    handleClick(){
+
+    }
+
+    handleChange(){}
     
     render(){
         
         return(
+            <div>
             <div className="input-field col s8">
-                <select multiple>
-                    <option value="" disabled selected>Categorias</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
+                <select multiple value={[]} onChange={(e)=>this.handleChange}>
+                    <option  disabled >Categorias</option>
+                    {this.state.categoriesList.map((entry)=> <option key={uid()} id={entry.id} value={entry.categorie}>{entry.categorie}</option>)}
                 </select>
-                <label>Materialize Multiple Select</label>
+            </div>
+                <a className="waves-effect waves-light btn" onClick={(e)=>this.handleClick}>Añadir a categorias</a>
             </div>
         );
     }

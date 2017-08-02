@@ -3,6 +3,7 @@
  */
 
 import React, {Component} from 'react';
+import uid from 'uid';
 
 export default class FileListTable extends Component{
 
@@ -24,31 +25,16 @@ export default class FileListTable extends Component{
                     </thead>
 
                     <tbody>
-                    <tr>
-                        <td>
-                            <input type="checkbox" id="uparchivo1" onChange={(e)=>this.handleChange()}/>
-                            <label htmlFor="uparchivo1"></label>
-                        </td>
-                        <td>archivo 1</td>
-                        <td>cat. 1</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" id="uparchivo2" onChange={(e)=>this.handleChange()}/>
-                            <label htmlFor="uparchivo2"></label>
-                        </td>
-                        <td>archivo 2</td>
-                        <td>cat. 2</td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" id="uparchivo3" onChange={(e)=>this.handleChange()}/>
-                            <label htmlFor="uparchivo3"></label>
-                        </td>
-                        <td>archivo 3</td>
-                        <td>cat. 3</td>
-                    </tr>
+                    {this.props.finalList.map(
+                        (entry) =>   <tr key={uid()}>
+                            <td>
+                                <input type="checkbox" id="uparchivo1" onChange={(e)=>this.handleChange()}/>
+                                <label htmlFor="uparchivo1"></label>
+                            </td>
+                            <td>{entry.name}</td>
+                            <td>cat. 1</td>
+                        </tr>
+                    )}
                     </tbody>
                 </table>
             </div>

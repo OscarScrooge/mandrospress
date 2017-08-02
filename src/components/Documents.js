@@ -6,14 +6,29 @@ import React, {Component} from 'react';
 import UploadFiles from './UploadFiles';
 import AddRemoveFromCategories from './AddRemoveFromCategorie';
 import FileListTable from './FileListTable';
-import UploadedFilesList from './UploadedFilesList';
+import api from '../../proxy/api';
 
 export default class Documents extends Component{
 
-    handleClick(){
-
+    constructor(){
+        super();
+        this.state = {
+            finalList:[]
+        };
+        this.changeStateFinalList=this.changeStateFinalList.bind(this);
     }
 
+    componentWillMount(){
+        api.call.createContentFolder('../../content/documentos',null);
+    }
+
+    changeStateFinalList(data){
+        this.setState(
+            {
+                finalList:data
+            }
+            );
+    }
 
    render(){
 
@@ -21,15 +36,11 @@ export default class Documents extends Component{
             <div className="">
                 <div className="center"><h3>Documentos</h3></div>
                 <UploadFiles/>
-                <UploadedFilesList/>
                 <div>
-                  <AddRemoveFromCategories/>
-
-                    <a className="waves-effect waves-light btn" onClick={(e)=>this.handleClick()}>Añadir</a>
-                    <a className="waves-effect waves-light btn">Eliminar</a>
+                  <AddRemoveFromCategories changeStateList={this.changeStateFinalList}/>
                 </div>
                 <div className="col s12">
-                     <FileListTable titleTable="Archivo"/>
+                     <FileListTable titleTable="Archivo" finalList={this.state.finalList}/>
                     <a className="waves-effect waves-light btn">Eliminar</a>
                 </div>
 

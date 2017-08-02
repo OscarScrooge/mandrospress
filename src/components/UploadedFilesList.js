@@ -3,26 +3,33 @@
  */
 
 import React,{Component} from 'react';
+import uploadesdFiles from '../../public/js/uploadedFiles';
+import uid from 'uid';
 
 export default class UploadedFilesList extends Component{
-    
+
+
+    handleClick(index,list){
+       uploadesdFiles.list.removeFile(index,list,this.props.updateListFunction);
+    }
+
+    handleChange(){}
+
     render(){
         return(
             <div className="uploadedFilesList">
                 <ul className="collection with-header">
-                    <li className="collection-item"><div>Archivo subido 1<a href="#!" className="secondary-content">
-                        <input type="checkbox" id="archivo1" onChange={(e)=>this.handleChange()}/>
-                        <label htmlFor="archivo1"></label>
-                    </a></div></li>
-                    <li className="collection-item"><div>Archivo subido 2<a href="#!" className="secondary-content">
-                        <input type="checkbox" id="archivo2" onChange={(e)=>this.handleChange()}/>
-                        <label htmlFor="archivo2"></label>
-                    </a></div></li>
-                    <li className="collection-item"><div>Archivo subido 2<a href="#!" className="secondary-content">
-                        <input type="checkbox" id="archivo3" onChange={(e)=>this.handleChange()}/>
-                        <label htmlFor="archivo3"></label>
-                    </a></div></li>
-
+                    {this.props.filesList.map(
+                        (entry,index)=> <li key={uid()} className="collection-item"><div>{entry.name}
+                            <a href="#" className="secondary-content">
+                                <i onClick={(e)=>this.handleClick(index,this.props.filesList)} className="small material-icons waves-effect waves-light black-text">clear</i>
+                            </a>
+                        <a href="#" className="secondary-content">
+                            <input type="checkbox" id={index} onChange={(e)=>this.handleChange()}/>
+                            <label htmlFor={index} ></label>
+                        </a>
+                        </div></li>
+                    )}
                 </ul>
             </div>
         );

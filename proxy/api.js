@@ -10,9 +10,11 @@ const urlQueriesManager = 'http://localhost/mandmin/server/dataBase/queries/Quer
 var call ={
 
     /**
-     * function()
+     *
+     * @param path
+     * @param callBack
      */
-    createContentFolder: function (callBack) {
+    createContentFolder: function (path,callBack) {
 
         var url= 'http://localhost/mandmin/server/files/CreateFolder.php';
         /**
@@ -21,7 +23,7 @@ var call ={
          * path include the folder name
          */
         var data={
-            path: '../../content',
+            path: path,
             permissions: '0777',
             recursivePermissions: 'true'
         };

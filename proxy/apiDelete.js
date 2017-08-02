@@ -11,7 +11,7 @@ var dataToDelete={
      * @param id
      * @param callBack
      */
-    categorie: function (id,callBack) {
+    deleteCategorie: function (id,callBack) {
         var data = {
             dataPutRequest: '',
             type: 'delete',

@@ -18,7 +18,7 @@ class App extends Component {
     }
 
     componentWillMount(){
-        api.call.createContentFolder();
+        api.call.createContentFolder('../../content',null);
     }
 
 
