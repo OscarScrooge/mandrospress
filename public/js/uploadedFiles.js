@@ -30,8 +30,10 @@ var files ={
      */
     removeFile: function(id,list,callBack){
          list.splice(id,1);
-        console.log(list);
-         callBack(list);
+        if(callBack){
+            callBack(list);
+        }
+
     },
 
     getFinalList(list,callBack){

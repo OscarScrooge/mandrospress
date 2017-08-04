@@ -6,6 +6,7 @@ import React ,{Component} from 'react';
 import UploadedFilesList from './UploadedFilesList';
 import uploadedFiles from '../../public/js/uploadedFiles';
 
+
 export default class UploadFiles extends Component{
 
     constructor(props){
@@ -18,11 +19,13 @@ export default class UploadFiles extends Component{
     }
 
     updateList(data) {
+        console.log("datos"+data);
         this.setState(
             {
                 uploadedFilesList: data
             }
-        );
+        ,this.props.updateDocs(data));
+
     }
 
 
@@ -45,7 +48,8 @@ export default class UploadFiles extends Component{
                             <input className="file-path validate" type="text" placeholder="Upload one or more files"/>
                         </div>
                     </div>
-                    <UploadedFilesList filesList={this.state.uploadedFilesList} updateListFunction={this.updateList}/>
+                    <UploadedFilesList filesList={this.state.uploadedFilesList} updateListFunction={this.updateList}
+                                       finalDocumentsFunction={this.props.finalDocumentsFunction}/>
                 </form>
             </div>
         );

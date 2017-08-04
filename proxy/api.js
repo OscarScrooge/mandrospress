@@ -67,6 +67,7 @@ var call ={
                 data: JSON.stringify(data)
             };
             call.ajax(object).then(function resolve(data) {
+                console.log(data);
                 call.getCategories(callBack);
                 $('.categorie_form')[0].reset();
                 $('.err').hide();

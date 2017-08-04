@@ -58,6 +58,7 @@ class Insert
 
         $query= "insert into mandmin.".$section." (categorie,description) values (".$insertValues.")";
 
+        echo $query;
 
         try{
             $prep = array(sizeof($pieces));
