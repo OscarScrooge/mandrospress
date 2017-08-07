@@ -38,6 +38,7 @@ export default class AddRemoveFromCategorie extends Component{
     }
 
     handleClick(){
+        console.log('sdfsdfs'+this.props.docsAUX);
         console.log(this.props.selectedDocuments);
         console.log($('select').val());
     }

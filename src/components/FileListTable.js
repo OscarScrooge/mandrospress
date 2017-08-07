@@ -25,11 +25,11 @@ export default class FileListTable extends Component{
                     </thead>
 
                     <tbody>
-                    {this.props.finalList.map(
-                        (entry) =>   <tr key={uid()}>
+                    {this.props.finalList.docs.map(
+                        (entry,index) =>   <tr key={uid()}>
                             <td>
-                                <input type="checkbox" id="uparchivo1" onChange={(e)=>this.handleChange()}/>
-                                <label htmlFor="uparchivo1"></label>
+                                <input type="checkbox" id={index} onChange={(e)=>this.handleChange}/>
+                                <label htmlFor={index}></label>
                             </td>
                             <td>{entry.name}</td>
                             <td>cat. 1</td>

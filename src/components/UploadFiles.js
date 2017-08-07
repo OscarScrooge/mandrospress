@@ -11,26 +11,12 @@ export default class UploadFiles extends Component{
 
     constructor(props){
         super(props);
-        this.state = {
-            uploadedFilesList: []
-        };
-        this.updateList = this.updateList.bind(this);
+
         this.handleChange = this.handleChange.bind(this);
     }
 
-    updateList(data) {
-        console.log("datos"+data);
-        this.setState(
-            {
-                uploadedFilesList: data
-            }
-        ,this.props.updateDocs(data));
-
-    }
-
-
-    handleChange(event){
-        uploadedFiles.list.fileList(this.updateList);
+    handleChange(){
+        uploadedFiles.list.fileList(this.props.changeStateDocuments);
     }
 
 
@@ -48,7 +34,7 @@ export default class UploadFiles extends Component{
                             <input className="file-path validate" type="text" placeholder="Upload one or more files"/>
                         </div>
                     </div>
-                    <UploadedFilesList filesList={this.state.uploadedFilesList} updateListFunction={this.updateList}
+                    <UploadedFilesList filesList={this.props.documents} changeStateDocuments={this.props.changeStateDocuments}
                                        finalDocumentsFunction={this.props.finalDocumentsFunction}/>
                 </form>
             </div>

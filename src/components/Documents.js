@@ -14,12 +14,13 @@ export default class Documents extends Component {
         super();
         this.state = {
             documents: [],
-            finalDocuments: [],
-            finalList: []
+            finalDocuments: {
+                docs: []
+            },
+        };
 
-        }
         this.changeStateDocuments = this.changeStateDocuments.bind(this);
-        // this.stateFinalDocuments = this.stateFinalDocuments.bind(this);
+        this.stateFinalDocuments = this.stateFinalDocuments.bind(this);
     }
 
     componentWillMount() {
@@ -27,6 +28,7 @@ export default class Documents extends Component {
     }
 
     changeStateDocuments(documents) {
+        console.log('mis datos'+ documents);
         this.setState(
             {
                 documents: documents,
@@ -35,26 +37,30 @@ export default class Documents extends Component {
     }
 
     stateFinalDocuments(docs){
-        console.log('finales '+ JSON.stringify(docs));
+
         this.setState(
             {
-                finalDocuments: docs
+                finalDocuments:{
+                    docs:docs
+                }
             }
-        );
+        ,function () {
+                var array=[];
+                this.changeStateDocuments(array);
+            });
     }
-
 
     render() {
 
         return (
             <div className="">
                 <div className="center"><h3>Documentos</h3></div>
-                <UploadFiles updateDocs={this.changeStateDocuments} finalDocumentsFunction={this.stateFinalDocuments}/>
+                <UploadFiles  changeStateDocuments={this.changeStateDocuments} documents={this.state.documents} finalDocumentsFunction={this.stateFinalDocuments}/>
                 <div>
                     <AddRemoveFromCategories updateCats={this.changeStateCategories} selectedDocuments={this.state.documents}/>
                 </div>
                 <div className="col s12">
-                    <FileListTable titleTable="Archivo" finalList={this.state.finalList}/>
+                    <FileListTable titleTable="Archivo" finalList={this.state.finalDocuments}/>
                     <a className="waves-effect waves-light btn">Eliminar</a>
                 </div>
 
