@@ -4,17 +4,32 @@
 
 import React,{Component} from 'react';
 import uploadesdFiles from '../../public/js/uploadedFiles';
+import api from '../../apis/api';
 import uid from 'uid';
 
+let pathToUpload;
 export default class UploadedFilesList extends Component{
 
     constructor(){
         super();
-        this.finalDocs= this.finalDocs.bind(this);
+        this.salvar=this.salvar.bind(this);
+    }
+
+    componentWillMount(){
+        var d= new Date();
+        var folderDate = d.getFullYear()+''+d.getMonth()+''+d.getDay();
+        api.call.createContentFolder('../../content',null);
+        api.call.createContentFolder('../../content/documentos',null);
+        api.call.createContentFolder('../../content/documentos/'+folderDate, null);
+        pathToUpload = '../../content/documentos/'+folderDate+'/';
     }
 
     handleClick(index,list){
        uploadesdFiles.list.removeFile(index,list,this.props.changeStateDocuments);
+    }
+
+    saveFilesInLocal(){
+        api.call.saveLocalFiles(this.props.filesList,pathToUpload,null)
     }
 
     render(){
@@ -28,9 +43,13 @@ export default class UploadedFilesList extends Component{
                             </a>
                         </div></li>
                     )}
-                    <a className="waves-effect waves-light btn" onClick={(e)=>this.props.finalDocumentsFunction(this.props.filesList)}>Aceptar</a>
+                    <a className="waves-effect waves-light btn" onClick={(e)=>this.saveFilesInLocal()}>Aceptar</a>
                 </ul>
             </div>
         );
     }
 }
+
+/*
+ this.props.finalDocumentsFunction(this.props.filesList)
+ */

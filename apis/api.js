@@ -1,28 +1,27 @@
-
-const post='POST';
-const get='GET';
+const post = 'POST';
+const get = 'GET';
 const urlQueriesManager = 'http://localhost/mandmin/server/dataBase/queries/QueriesManager.php';
-
+const urlSaveLocalFiles = 'http://localhost/mandmin/server/files/SaveLocalFiles.php';
 /**
  *
  * @type {{createContentFolder: call.createContentFolder, createCategorie: call.createCategorie, ajax: call.ajax}}
  */
-var call ={
+var call = {
 
     /**
      *
      * @param path
      * @param callBack
      */
-    createContentFolder: function (path,callBack) {
+    createContentFolder: function (path, callBack) {
 
-        var url= 'http://localhost/mandmin/server/files/CreateFolder.php';
+        var url = 'http://localhost/mandmin/server/files/CreateFolder.php';
         /**
          *
          * @type {{path: string, permissions: string, recursivePermissions: string}}
          * path include the folder name
          */
-        var data={
+        var data = {
             path: path,
             permissions: '0777',
             recursivePermissions: 'true'
@@ -37,7 +36,7 @@ var call ={
 
         this.ajax(object).then(function resolve(data) {
             console.log(data);
-        },function reject(reason) {
+        }, function reject(reason) {
             console.log('algo salio mal');
             console.log(reason);
         });
@@ -49,16 +48,16 @@ var call ={
     createCategorie: function (callBack) {
 
 
-            var form =$('.categorie_form').serializeArray();
-           console.log(form);
-           if(form[0].value){
+        var form = $('.categorie_form').serializeArray();
+        console.log(form);
+        if (form[0].value) {
             var dataPut = call.managerData(form);
             var data = {
                 dataPutRequest: dataPut,
                 type: 'insert',
                 resultNumber: 0,
                 section: 'categories',
-                condition:''
+                condition: ''
             };
             var object = {
                 type: post,
@@ -71,14 +70,14 @@ var call ={
                 call.getCategories(callBack);
                 $('.categorie_form')[0].reset();
                 $('.err').hide();
-            },function reject(reason) {
+            }, function reject(reason) {
                 console.log('algo salio mal');
                 console.log(reason);
             });
 
-           }else{
-              $('.err').show();
-           }
+        } else {
+            $('.err').show();
+        }
 
     },
 
@@ -86,19 +85,19 @@ var call ={
     /**
      * function()
      */
-    getCategories: function(callBack){
+    getCategories: function (callBack) {
 
-        var dataRequest = {value:'*'};
+        var dataRequest = {value: '*'};
         var array = [dataRequest];
 
         var request = call.managerData(array);
 
-        var data ={
+        var data = {
             dataPutRequest: request,
             type: 'select',
             resultNumber: 0,
-            section:'categories',
-            conditions:''
+            section: 'categories',
+            conditions: ''
         };
 
         var object = {
@@ -110,10 +109,49 @@ var call ={
 
         this.ajax(object).then(function resolve(data) {
             callBack(JSON.parse(data));
-        },function reject(reason) {
+        }, function reject(reason) {
             console.log('algo salio mal');
             console.log(reason);
         });
+    },
+
+    /**
+     *
+     * @param filesArray
+     * @param path
+     * @param callBack
+     */
+
+    saveLocalFiles: function (filesArray, path, callBack) {
+
+        if (filesArray.length === 0) {
+            alert('No ha documentos para agregar a la lista');
+        } else {
+
+            var formFiles = new FormData();
+
+            for (var i=0;i<filesArray.length;i++) {
+                formFiles.append('file' + i, filesArray[i]);
+            }
+
+            formFiles.append('path', path);
+
+            var object={
+                type: post,
+                crossDomain: true,
+                url: urlSaveLocalFiles,
+                contentType:false,
+                processData:false,
+                data: formFiles
+            };
+
+            call.ajax(object).then(function resolve(resolve) {
+                console.log(resolve);
+            }, function reject(reason) {
+                console.log('Something is wrong');
+                console.log(reason);
+            });
+        }
     },
     /**
      *
@@ -122,12 +160,22 @@ var call ={
      */
     managerData: function (array) {
 
-        var dataPutRequest='';
+        var dataPutRequest = '';
         array.forEach(function (element) {
-            dataPutRequest+=element.value+",";
+            dataPutRequest += element.value + ",";
         });
 
-        return dataPutRequest.substr(0,(dataPutRequest.length)-1);
+        return dataPutRequest.substr(0, (dataPutRequest.length) - 1);
+    },
+
+    /**
+     *
+     * @param array
+     * @param callBack
+     */
+    managerDataDocuments: function (array, callBack) {
+
+
     },
 
     /**
@@ -138,7 +186,7 @@ var call ={
      */
     ajax: function (object) {
 
-        return new Promise(function (resolve,reject) {
+        return new Promise(function (resolve, reject) {
             $.ajax(object).done(resolve).fail(reject);
         });
 

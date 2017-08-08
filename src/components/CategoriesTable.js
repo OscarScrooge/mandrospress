@@ -3,7 +3,7 @@
  */
 
 import React, {Component} from 'react';
-import apiDelete from '../../proxy/apiDelete';
+import apiDelete from '../../apis/apiDelete';
 import uid from 'uid';
 
 export default class CategoriesTable extends Component{

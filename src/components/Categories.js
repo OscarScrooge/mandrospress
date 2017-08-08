@@ -3,7 +3,7 @@
  */
 import React , {Component} from 'react';
 import CategoriesTable from './CategoriesTable';
-import api from '../../proxy/api';
+import api from '../../apis/api';
 import $ from 'jquery';
 
 let thisComponent;

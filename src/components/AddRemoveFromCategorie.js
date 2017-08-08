@@ -5,7 +5,7 @@
 import React, {Component} from 'react';
 import $ from 'jquery';
 import uid from 'uid';
-import api from '../../proxy/api';
+import api from '../../apis/api';
 
 export default class AddRemoveFromCategorie extends Component{
 

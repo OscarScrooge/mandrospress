@@ -6,7 +6,6 @@ import React, {Component} from "react";
 import UploadFiles from "./UploadFiles";
 import AddRemoveFromCategories from "./AddRemoveFromCategorie";
 import FileListTable from "./FileListTable";
-import api from "../../proxy/api";
 
 export default class Documents extends Component {
 
@@ -23,12 +22,7 @@ export default class Documents extends Component {
         this.stateFinalDocuments = this.stateFinalDocuments.bind(this);
     }
 
-    componentWillMount() {
-        api.call.createContentFolder('../../content/documentos', null);
-    }
-
     changeStateDocuments(documents) {
-        console.log('mis datos'+ documents);
         this.setState(
             {
                 documents: documents,
@@ -56,12 +50,14 @@ export default class Documents extends Component {
             <div className="">
                 <div className="center"><h3>Documentos</h3></div>
                 <UploadFiles  changeStateDocuments={this.changeStateDocuments} documents={this.state.documents} finalDocumentsFunction={this.stateFinalDocuments}/>
-                <div>
-                    <AddRemoveFromCategories updateCats={this.changeStateCategories} selectedDocuments={this.state.documents}/>
-                </div>
+
                 <div className="col s12">
                     <FileListTable titleTable="Archivo" finalList={this.state.finalDocuments}/>
-                    <a className="waves-effect waves-light btn">Eliminar</a>
+                    <a className="waves-effect waves-light btn">Eliminar documento</a>
+                </div>
+
+                <div>
+                    <AddRemoveFromCategories updateCats={this.changeStateCategories} selectedDocuments={this.state.documents}/>
                 </div>
 
 
