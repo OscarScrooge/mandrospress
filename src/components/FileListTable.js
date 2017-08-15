@@ -5,7 +5,91 @@
 import React, {Component} from 'react';
 import uid from 'uid';
 
+var array=[];
 export default class FileListTable extends Component{
+
+
+    constructor(){
+        super();
+        this.state={
+            selectedFiles:[],
+            isCheckedAux:[],
+            isChecked: false,
+            flag:false
+        };
+        this.changeSelectedFiles=this.changeSelectedFiles.bind(this);
+        this.currentCheckState=this.currentCheckState.bind(this);
+        // this.isCheckedAuxState=this.isCheckedAuxState.bind(this);
+
+    }
+
+
+
+
+    changeSelectedFiles(array) {
+        this.setState({
+            selectedFiles:array
+        },function () {
+            this.props.selectedFilesList(this.state.selectedFiles);
+        });
+
+    }
+
+
+    currentCheckState(check,index){
+        var arr=this.state.isCheckedAux;
+
+        for(var i=0;i<this.state.isCheckedAux.length;i++){
+
+            if(i==index){
+                arr[i]=check;
+            }
+        }
+        this.setState({
+            isCheckedAux:arr
+        });
+    }
+
+
+
+
+    handleChange(event,idFile){
+
+
+        if(event.target.checked){
+            var object={
+                fileId:event.target.id
+            };
+            array.push(object);
+            this.currentCheckState(false,event.target.value);
+        }else{
+            var index=array.findIndex(element=> element.fileId===idFile);
+            array.splice(index,1);
+            this.currentCheckState(true,event.target.value);
+        }
+        this.changeSelectedFiles(array);
+    }
+
+    componentDidUpdate(){
+
+
+            if(this.state.flag){
+                return;
+            }
+            var sizeIsCheckedAux=this.props.sizeFinalList;
+            var array=[];
+            for(var i=0;i<sizeIsCheckedAux;i++){
+                array.push(true);
+            }
+            this.setState({
+                isCheckedAux:array,
+                flag:true
+            },function () {
+                return;
+            });
+
+    }
+
 
 
     render() {
@@ -28,11 +112,15 @@ export default class FileListTable extends Component{
                     {this.props.finalList.docs.map(
                         (entry,index) =>   <tr key={uid()}>
                             <td>
-                                <input type="checkbox" id={index} onChange={(e)=>this.handleChange}/>
-                                <label htmlFor={index}></label>
+                                <input type="checkbox" id={entry.id}
+                                       value={index}
+                                       onChange={(e)=>this.handleChange(e,entry.id)}
+                                       checked={this.state.isChecked===this.state.isCheckedAux[index]}
+                                />
+                                <label htmlFor={entry.id}></label>
                             </td>
                             <td>{entry.name}</td>
-                            <td>cat. 1</td>
+                            <td>{entry.categorie}</td>
                         </tr>
                     )}
                     </tbody>

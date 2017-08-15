@@ -2,6 +2,22 @@ const post = 'POST';
 const get = 'GET';
 const urlQueriesManager = 'http://localhost/mandmin/server/dataBase/queries/QueriesManager.php';
 const urlSaveLocalFiles = 'http://localhost/mandmin/server/files/SaveLocalFiles.php';
+
+/**
+ *
+ * @type {{dataPutRequest: string, type: string, resultNumber: number, section: string, condition: string, fields: string}}
+ */
+var dataInsert = {
+    dataPutRequest: '',
+    type: '',
+    resultNumber: 0,
+    section: '',
+    condition: '',
+    fields:'',
+    order:''
+};
+
+var dataInserEmpty=dataInsert;
 /**
  *
  * @type {{createContentFolder: call.createContentFolder, createCategorie: call.createCategorie, ajax: call.ajax}}
@@ -49,27 +65,33 @@ var call = {
 
 
         var form = $('.categorie_form').serializeArray();
-        console.log(form);
         if (form[0].value) {
             var dataPut = call.managerData(form);
-            var data = {
-                dataPutRequest: dataPut,
-                type: 'insert',
-                resultNumber: 0,
-                section: 'categories',
-                condition: ''
-            };
+
+            dataInsert.dataPutRequest=dataPut;
+            dataInsert.type='insert';
+            dataInsert.resultNumber=0;
+            dataInsert.section='categories';
+            dataInsert.fields='categorie,description';
+            // var data = {
+            //     dataPutRequest: dataPut,
+            //     type: 'insert',
+            //     resultNumber: 0,
+            //     section: 'categories',
+            //     condition: ''
+            // };
             var object = {
                 type: post,
                 crossDomain: true,
                 url: urlQueriesManager,
-                data: JSON.stringify(data)
+                data: JSON.stringify(dataInsert)
             };
             call.ajax(object).then(function resolve(data) {
                 console.log(data);
                 call.getCategories(callBack);
                 $('.categorie_form')[0].reset();
                 $('.err').hide();
+                dataInsert=dataInserEmpty;
             }, function reject(reason) {
                 console.log('algo salio mal');
                 console.log(reason);
@@ -97,7 +119,8 @@ var call = {
             type: 'select',
             resultNumber: 0,
             section: 'categories',
-            conditions: ''
+            condition: '',
+            order:'order by id desc'
         };
 
         var object = {
@@ -115,6 +138,38 @@ var call = {
         });
     },
 
+    getDocuments: function (callBack) {
+
+        var dataRequest = {value: '*'};
+        var array = [dataRequest];
+
+        var request = call.managerData(array);
+
+        var data = {
+            dataPutRequest: request,
+            type: 'select',
+            resultNumber: 0,
+            section: 'alldocuments',
+            condition: '',
+            order:'order by id desc'
+        };
+
+        var object = {
+            type: post,
+            crossDomain: true,
+            url: urlQueriesManager,
+            data: JSON.stringify(data)
+        };
+
+        this.ajax(object).then(function resolve(data) {
+            console.log(data);
+            callBack(JSON.parse(data));
+        }, function reject(reason) {
+            console.log('algo salio mal');
+            console.log(reason);
+        });
+    },
+
     /**
      *
      * @param filesArray
@@ -122,7 +177,7 @@ var call = {
      * @param callBack
      */
 
-    saveLocalFiles: function (filesArray, path, callBack) {
+    saveLocalFiles: function (filesArray, path, callBack,callBack2) {
 
         if (filesArray.length === 0) {
             alert('No ha documentos para agregar a la lista');
@@ -146,7 +201,7 @@ var call = {
             };
 
             call.ajax(object).then(function resolve(resolve) {
-                console.log(resolve);
+                callBack(resolve,callBack2);
             }, function reject(reason) {
                 console.log('Something is wrong');
                 console.log(reason);
@@ -156,10 +211,45 @@ var call = {
     /**
      *
      * @param array
+     * @param callBack
+     */
+    saveFilesInDB: function(array,callBack){
+
+        var arr=JSON.parse(array);
+        var object = {
+            type: post,
+            crossDomain: true,
+            url: urlQueriesManager,
+            data: ''
+        };
+
+        arr.forEach(function (element) {
+            dataInsert.fields='name,path,type';
+            dataInsert.dataPutRequest=element.name+','+element.url+','+element.type;
+            dataInsert.type='insert';
+            dataInsert.section='documents';
+
+            object.data= JSON.stringify(dataInsert);
+
+            call.ajax(object).then(function resolve(resolve) {
+               console.log(resolve);
+                dataInsert=dataInserEmpty;
+                callBack(resolve);
+            }, function reject(reason) {
+                console.log('Something is wrong');
+                console.log(reason);
+            });
+
+        });
+        $('.progress').hide();
+        call.getDocuments(callBack);
+    },
+    /**
+     *
+     * @param array
      * @returns {string}
      */
     managerData: function (array) {
-
         var dataPutRequest = '';
         array.forEach(function (element) {
             dataPutRequest += element.value + ",";
@@ -170,10 +260,42 @@ var call = {
 
     /**
      *
-     * @param array
+     * @param arrayDocuments
+     * @param arrayCategories
      * @param callBack
      */
-    managerDataDocuments: function (array, callBack) {
+    insertIntoRelDocumentsCategories: function (arrayDocuments,arrayCategories,callBack) {
+
+        $('.progress').show();
+
+        dataInsert.type='insert';
+        dataInsert.fields='id_document,id_categorie';
+        dataInsert.section='rel_categories_document';
+
+        var object={
+            type: post,
+            crossDomain: true,
+            url: urlQueriesManager,
+            data:''
+        };
+
+        arrayDocuments.forEach(function (document) {
+            arrayCategories.forEach(function (categorie) {
+
+                dataInsert.dataPutRequest=document.fileId+","+categorie;
+
+                object.data=JSON.stringify(dataInsert);
+
+                call.ajax(object).then(function resolve(resolve) {
+                    console.log(resolve);
+                }, function reject(reason) {
+                    console.log('Something is wrong');
+                    console.log(reason);
+                });
+            });
+        });
+        dataInsert=dataInserEmpty;
+        $('.progress').hide();
 
 
     },

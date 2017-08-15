@@ -38,9 +38,12 @@ export default class AddRemoveFromCategorie extends Component{
     }
 
     handleClick(){
-        console.log('sdfsdfs'+this.props.docsAUX);
-        console.log(this.props.selectedDocuments);
-        console.log($('select').val());
+        let arrayDocs= this.props.selectedDocuments;
+        let arrayCats=$('select').val();
+        let callBack=null;
+        // console.log(this.props.selectedDocuments);
+        // console.log($('select').val());
+        api.call.insertIntoRelDocumentsCategories(arrayDocs,arrayCats,callBack);
     }
 
 
@@ -51,7 +54,8 @@ export default class AddRemoveFromCategorie extends Component{
             <div className="input-field col s8">
                 <select className="multipleSelect" multiple value={[]} onChange={this.handleChange}>
                     <option  disabled >Categorias</option>
-                    {this.state.categoriesList.map((entry)=> <option key={uid()} id={entry.id} value={entry.categorie}>{entry.categorie}</option>)}
+                    {this.state.categoriesList.map((entry)=>
+                        <option key={uid()} id={entry.id} value={entry.id}>{entry.categorie}</option>)}
                 </select>
             </div>
                 <a className="waves-effect waves-light btn" onClick={this.handleClick}>Añadir a categorias</a>

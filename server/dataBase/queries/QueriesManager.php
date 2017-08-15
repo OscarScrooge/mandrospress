@@ -28,6 +28,8 @@ class QueriesManager
     private $section;
     private $condition;
     private $conn;
+    private $fields;
+    private $order;
 
     /**
      * QueriesManager constructor.
@@ -36,8 +38,10 @@ class QueriesManager
      * @param $resultNumber
      * @param $section
      * @param $condition
+     * @param $fields
+     * @param $order
      */
-    function __construct($type,$dataPutRequest,$resultNumber,$section,$condition)
+    function __construct($type,$dataPutRequest,$resultNumber,$section,$condition,$fields,$order)
     {
 
         $this->type=$type;
@@ -45,22 +49,28 @@ class QueriesManager
         $this->resultNumber=$resultNumber;
         $this->section=$section;
         $this->condition=$condition;
+        $this->fields=$fields;
+        $this->order=$order;
         $this->dbconnection();
 
         switch (strtolower($type)){
-
             case 'insert':
+
                 $this->insert(strtolower($this->getType()),
                     strtolower($this->getDataPutRequest()),
                     strtolower($this->getResultNumber()),
-                    strtolower($this->getSection()));
+                    strtolower($this->getSection()),
+                    strtolower($this->getFields())
+                );
                 break;
             case 'select':
                 $this->select(strtolower($this->getType()),
                     strtolower($this->getDataPutRequest()),
                     strtolower($this->getResultNumber()),
                     strtolower($this->getSection()),
-                    strtolower($this->getCondition()));
+                    strtolower($this->getCondition()),
+                    strtolower($this->getOrder())
+                );
                 break;
             case 'delete':
                 $this->delete(strtolower($this->getType()),
@@ -85,8 +95,8 @@ class QueriesManager
      * @param $resultNumber
      * @param $section
      */
-    private function insert($type,$dataPutRequest,$resultNumber,$section){
-        $insert = new Insert($type,$dataPutRequest,$resultNumber,$section,$this->getConn());
+    private function insert($type,$dataPutRequest,$resultNumber,$section,$fields){
+        $insert = new Insert($type,$dataPutRequest,$resultNumber,$section,$this->getConn(),$fields);
     }
 
     /**
@@ -96,8 +106,8 @@ class QueriesManager
      * @param $section
      * @param $condition
      */
-     private function select($type,$dataPutRequest,$resultNumber,$section,$condition){
-        $select = new Select($type,$dataPutRequest,$resultNumber,$section,$condition,$this->getConn());
+     private function select($type,$dataPutRequest,$resultNumber,$section,$condition,$order){
+        $select = new Select($type,$dataPutRequest,$resultNumber,$section,$condition,$this->getConn(),$order);
     }
 
     /**
@@ -112,7 +122,6 @@ class QueriesManager
     }
 
     private function  dbconnection(){
-        $this->conn=new ConnectionDB("localhost","mysql","mandmin","madmin","madmin@314159265");
     }
 
     /**
@@ -195,16 +204,37 @@ class QueriesManager
         return $this->condition;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+
+
 
 
 }
 $getData = file_get_contents("php://input");
 $data= json_decode($getData);
 //
+
 $manager = new QueriesManager(
     $data->{'type'},
     $data->{'dataPutRequest'},
     $data->{'resultNumber'},
     $data->{'section'},
-    $data->{'condition'}
+    $data->{'condition'},
+    $data->{'fields'},
+    $data->{'order'}
     );

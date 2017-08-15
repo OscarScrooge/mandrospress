@@ -130,6 +130,9 @@ class ConnectionDB
             // set the PDO error mode to exception
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 //            echo "ok connection DB";
+            $query= "SET sql_mode = ''";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
         }
         catch(PDOException $e)
         {

@@ -18,6 +18,7 @@ class Select
     private $section;
     private $condition;
     private $connectionDB;
+    private $order;
 
     /**
      * Insert constructor.
@@ -27,7 +28,7 @@ class Select
      * @param $section
      * @param $connectionDB
      */
-    function __construct($type,$dataPut,$resultNumber,$section,$condition,$connectionDB)
+    function __construct($type,$dataPut,$resultNumber,$section,$condition,$connectionDB,$order)
     {
         $this->type = $type;
         $this->dataPut = $dataPut;
@@ -35,8 +36,16 @@ class Select
         $this->section = $section;
         $this->condition = $condition;
         $this->connectionDB = $connectionDB;
+        $this->order=$order;
 
-        $this->doQuery($this->getType(),$this->getDataPut(),$this->getResultNumber(),$this->getSection(),$this->getCondition(),$this->getConnectionDB());
+        $this->doQuery($this->getType(),
+            $this->getDataPut(),
+            $this->getResultNumber(),
+            $this->getSection(),
+            $this->getCondition(),
+            $this->getConnectionDB(),
+            $this->getOrder()
+        );
 
     }
 
@@ -47,14 +56,14 @@ class Select
      * @param $section
      * @param $conn
      */
-    private function doQuery($type,$dataPut,$resultNumber,$section,$condition,$conn){
+    private function doQuery($type,$dataPut,$resultNumber,$section,$condition,$conn,$order){
 
 
         if($condition!==''){
             $condition.=' where '.$condition;
         }
 
-        $query= "select ".$dataPut." from mandmin.".$section." ".$condition;
+        $query= "select ".$dataPut." from mandmin.".$section." ".$condition." ".$order;
 
         try{
 
@@ -125,6 +134,16 @@ class Select
     {
         return $this->condition;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+
 
 }
 

@@ -35,7 +35,7 @@ export default class UploadFiles extends Component{
                         </div>
                     </div>
                     <UploadedFilesList filesList={this.props.documents} changeStateDocuments={this.props.changeStateDocuments}
-                                       finalDocumentsFunction={this.props.finalDocumentsFunction}/>
+                                       stateFinalDocuments={this.props.stateFinalDocuments}/>
                 </form>
             </div>
         );

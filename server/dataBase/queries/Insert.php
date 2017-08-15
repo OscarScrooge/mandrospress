@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -17,6 +18,7 @@ class Insert
     private $resultNumber;
     private $section;
     private $connectionDB;
+    private $fields;
 
     /**
      * Insert constructor.
@@ -26,15 +28,22 @@ class Insert
      * @param $section
      * @param $connectionDB
      */
-    function __construct($type,$dataPut,$resultNumber,$section,$connectionDB)
+    function __construct($type,$dataPut,$resultNumber,$section,$connectionDB,$fields)
     {
         $this->type = $type;
         $this->dataPut = $dataPut;
         $this->resultNumber = $resultNumber;
         $this->section = $section;
+        $this->fields=$fields;
         $this->connectionDB = $connectionDB;
 
-        $this->doQuery($this->getType(),$this->getDataPut(),$this->getResultNumber(),$this->getSection(),$this->getConnectionDB());
+        $this->doQuery($this->getType(),
+            $this->getDataPut(),
+            $this->getResultNumber(),
+            $this->getSection(),
+            $this->getConnectionDB(),
+            $this->getFields()
+        );
 
     }
 
@@ -45,21 +54,15 @@ class Insert
      * @param $section
      * @param $conn
      */
-    private function doQuery($type,$dataPut,$resultNumber,$section,$conn){
+    private function doQuery($type,$dataPut,$resultNumber,$section,$conn,$fields){
 
         $pieces = explode(",", $dataPut);
+        $insertValues = $this->getMarkQuestionValues($dataPut,$pieces);
+
+        $query= "insert into mandmin.".$section.' ('.$fields.') '." values (".$insertValues.")";
+         echo $query;
+
         $i=1;
-        $insertValues="";
-
-        for($k=0;$k<sizeof($pieces);$k++){
-            $insertValues.="?,";
-        }
-        $insertValues = substr( $insertValues , 0 , -1);
-
-        $query= "insert into mandmin.".$section." (categorie,description) values (".$insertValues.")";
-
-        echo $query;
-
         try{
             $prep = array(sizeof($pieces));
 
@@ -75,10 +78,26 @@ class Insert
         }finally{
             $conn=null;
         }
+    }
 
 
+    /**
+     * @param $dataPut
+     * @param $pieces
+     * @return string
+     */
+    private function getMarkQuestionValues($dataPut,$pieces){
 
 
+        $insertValues="";
+
+        for($k=0;$k<sizeof($pieces);$k++){
+            $insertValues.="?,";
+        }
+
+        $insertValues= substr( $insertValues , 0 , -1);
+
+        return $insertValues;
     }
 
     /**
@@ -119,6 +138,14 @@ class Insert
     public function getConnectionDB()
     {
         return $this->connectionDB;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFields()
+    {
+        return $this->fields;
     }
 
 
