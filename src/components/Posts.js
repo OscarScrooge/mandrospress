@@ -8,9 +8,74 @@ import AddRemoveFromCategories from './AddRemoveFromCategorie';
 import FileListTable from './FileListTable';
 import UploadedFilesList from './UploadedFilesList';
 import TextArea from './TextArea';
+import $ from 'jquery';
+import api from '../../apis/api';
 
 export default class Posts extends Component{
 
+    constructor() {
+        super();
+        this.state = {
+            documents: [],
+            finalDocuments: {
+                docs: []
+            },
+            sizeFinalDocuments:0,
+            selectedFiles: []
+        };
+
+        this.changeStateDocuments = this.changeStateDocuments.bind(this);
+        this.stateFinalDocuments = this.stateFinalDocuments.bind(this);
+        this.changeStateSelectedFilesList= this.changeStateSelectedFilesList.bind(this);
+        this.stateDocsWithCategories=this.stateDocsWithCategories.bind(this);
+    }
+
+    changeStateDocuments(documents) {
+        this.setState(
+            {
+                documents: documents,
+            }
+        );
+    }
+
+    stateFinalDocuments(docs) {
+
+        this.setState(
+            {
+                finalDocuments: {
+                    docs: docs
+                },
+                sizeFinalDocuments:docs.length
+
+            }
+            , function () {
+                var array = [];
+                this.changeStateDocuments(array);
+            });
+    }
+
+    stateDocsWithCategories(docs){
+        this.setState({
+            finalDocuments: {
+                docs: docs
+            },
+            sizeFinalDocuments:docs.length
+        });
+    }
+
+    changeStateSelectedFilesList(array){
+
+        this.setState({
+            selectedFiles:array
+        },function () {
+            console.log(JSON.stringify(this.state.selectedFiles));
+        });
+    }
+
+    componentDidMount() {
+        $('.progress').hide();
+        api.call.getDocuments(this.stateFinalDocuments,6,0);
+    }
 
 
     render(){
@@ -26,16 +91,23 @@ export default class Posts extends Component{
                 </div>
                 <TextArea/>
                 <h6>Adjuntar archivos</h6>
-                <UploadFiles/>
-                <UploadedFilesList/>
+                <UploadFiles changeStateDocuments={this.changeStateDocuments} documents={this.state.documents}
+                             stateFinalDocuments={this.stateFinalDocuments}/>
+                {/*<UploadedFilesList/>*/}
                 <div>
-                    <AddRemoveFromCategories/>
-                    <a className="waves-effect waves-light btn">Añadir</a>
-                    <a className="waves-effect waves-light btn">Eliminar</a>
+                    <AddRemoveFromCategories
+                        newFiles={this.stateDocsWithCategories}
+                        selectedDocuments={this.state.selectedFiles}/>
                 </div>
                 <div className="col s12">
-                    <FileListTable titleTable="Post"/>
-                    <a className="waves-effect waves-light btn">Eliminar</a>
+                    <FileListTable titleTable="Archivo"
+                                   finalList={this.state.finalDocuments.docs}
+                                   selectedFilesList={this.changeStateSelectedFilesList}
+                                   sizeFinalList={this.state.sizeFinalDocuments}
+                                   stateFinalDocuments={this.stateFinalDocuments}
+
+                    />
+                    <a className="waves-effect waves-light btn">Eliminar documento</a>
                 </div>
 
 

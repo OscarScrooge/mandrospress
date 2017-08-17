@@ -3,6 +3,7 @@
  */
 
 import React, {Component} from 'react';
+import Pagination from './Pagination';
 import uid from 'uid';
 
 var array=[];
@@ -96,6 +97,7 @@ export default class FileListTable extends Component{
 
         return (
             <div className="">
+                <Pagination  stateFinalDocuments={this.props.stateFinalDocuments}/>
                 <table className="responsive-table">
                     <thead>
                     <tr>
@@ -109,7 +111,7 @@ export default class FileListTable extends Component{
                     </thead>
 
                     <tbody>
-                    {this.props.finalList.docs.map(
+                    {this.props.finalList.map(
                         (entry,index) =>   <tr key={uid()}>
                             <td>
                                 <input type="checkbox" id={entry.id}
@@ -125,6 +127,7 @@ export default class FileListTable extends Component{
                     )}
                     </tbody>
                 </table>
+                <Pagination  stateFinalDocuments={this.props.stateFinalDocuments}/>
             </div>
         );
     }

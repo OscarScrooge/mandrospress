@@ -25,6 +25,7 @@ export default class Documents extends Component {
         this.changeStateDocuments = this.changeStateDocuments.bind(this);
         this.stateFinalDocuments = this.stateFinalDocuments.bind(this);
         this.changeStateSelectedFilesList= this.changeStateSelectedFilesList.bind(this);
+        this.stateDocsWithCategories=this.stateDocsWithCategories.bind(this);
     }
 
     changeStateDocuments(documents) {
@@ -51,6 +52,15 @@ export default class Documents extends Component {
             });
     }
 
+    stateDocsWithCategories(docs){
+        this.setState({
+            finalDocuments: {
+                docs: docs
+            },
+            sizeFinalDocuments:docs.length
+        });
+    }
+    
     changeStateSelectedFilesList(array){
 
         this.setState({
@@ -62,7 +72,7 @@ export default class Documents extends Component {
 
     componentDidMount() {
         $('.progress').hide();
-        api.call.getDocuments(this.stateFinalDocuments);
+        api.call.getDocuments(this.stateFinalDocuments,6,0);
     }
 
     render() {
@@ -80,16 +90,19 @@ export default class Documents extends Component {
                 <div className="col s12">
 
                     <FileListTable titleTable="Archivo"
-                                   finalList={this.state.finalDocuments}
+                                   finalList={this.state.finalDocuments.docs}
                                    selectedFilesList={this.changeStateSelectedFilesList}
                                    sizeFinalList={this.state.sizeFinalDocuments}
+                                   stateFinalDocuments={this.stateFinalDocuments}
 
                     />
                     <a className="waves-effect waves-light btn">Eliminar documento</a>
                 </div>
 
                 <div>
-                    <AddRemoveFromCategories selectedDocuments={this.state.selectedFiles}/>
+                    <AddRemoveFromCategories
+                        newFiles={this.stateDocsWithCategories}
+                        selectedDocuments={this.state.selectedFiles}/>
                 </div>
 
             </div>

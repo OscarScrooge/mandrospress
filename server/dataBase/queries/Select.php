@@ -63,8 +63,7 @@ class Select
             $condition.=' where '.$condition;
         }
 
-        $query= "select ".$dataPut." from mandmin.".$section." ".$condition." ".$order;
-
+        $query= "select ".$dataPut." from mandmin.".$section." ".$condition." ".$order." ".$resultNumber;
         try{
 
             $stmt = $conn->getConnection()->prepare($query);

@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import $ from 'jquery';
 import uid from 'uid';
 import api from '../../apis/api';
+import apiDelete from '../../apis/apiDelete';
 
 export default class AddRemoveFromCategorie extends Component{
 
@@ -17,6 +18,7 @@ export default class AddRemoveFromCategorie extends Component{
         this.getCatList = this.getCatList.bind(this);
         this.handleClick=this.handleClick.bind(this);
         this.handleChange= this.handleChange.bind(this);
+        this.deleteFromCategorie=this.deleteFromCategorie.bind(this);
     }
 
     getCatList(data){
@@ -40,10 +42,17 @@ export default class AddRemoveFromCategorie extends Component{
     handleClick(){
         let arrayDocs= this.props.selectedDocuments;
         let arrayCats=$('select').val();
-        let callBack=null;
-        // console.log(this.props.selectedDocuments);
-        // console.log($('select').val());
+        let callBack=this.props.newFiles;
         api.call.insertIntoRelDocumentsCategories(arrayDocs,arrayCats,callBack);
+        this.getCatList(this.state.categoriesList);
+    }
+
+    deleteFromCategorie(){
+        let arrayDocs= this.props.selectedDocuments;
+        let arrayCats=$('select').val();
+        let callBack=this.props.newFiles;
+        apiDelete.delete.deleteFromCategories(arrayDocs,arrayCats,callBack);
+        this.getCatList(this.state.categoriesList);
     }
 
 
@@ -58,7 +67,11 @@ export default class AddRemoveFromCategorie extends Component{
                         <option key={uid()} id={entry.id} value={entry.id}>{entry.categorie}</option>)}
                 </select>
             </div>
-                <a className="waves-effect waves-light btn" onClick={this.handleClick}>Añadir a categorias</a>
+                <a className="waves-effect waves-light btn"
+                   onClick={(e)=this.handleClick}>Añadir a categorias</a>
+                <a className="waves-effect waves-light btn"
+                   onClick={(e)=>this.deleteFromCategorie}>Eliminar de categorias</a>
+
             </div>
         );
     }

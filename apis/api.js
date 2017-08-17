@@ -105,7 +105,8 @@ var call = {
 
 
     /**
-     * function()
+     *
+     * @param callBack
      */
     getCategories: function (callBack) {
 
@@ -117,7 +118,7 @@ var call = {
         var data = {
             dataPutRequest: request,
             type: 'select',
-            resultNumber: 0,
+            resultNumber: '',
             section: 'categories',
             condition: '',
             order:'order by id desc'
@@ -131,6 +132,7 @@ var call = {
         };
 
         this.ajax(object).then(function resolve(data) {
+            // console.log(data)
             callBack(JSON.parse(data));
         }, function reject(reason) {
             console.log('algo salio mal');
@@ -138,7 +140,13 @@ var call = {
         });
     },
 
-    getDocuments: function (callBack) {
+    /***
+     *
+     * @param callBack
+     * @param limit
+     * @param offset
+     */
+    getDocuments: function (callBack,limit,offset) {
 
         var dataRequest = {value: '*'};
         var array = [dataRequest];
@@ -148,7 +156,7 @@ var call = {
         var data = {
             dataPutRequest: request,
             type: 'select',
-            resultNumber: 0,
+            resultNumber: 'limit '+ limit +' OFFSET '+ offset,
             section: 'alldocuments',
             condition: '',
             order:'order by id desc'
@@ -162,8 +170,44 @@ var call = {
         };
 
         this.ajax(object).then(function resolve(data) {
-            console.log(data);
+            // console.log(data);
             callBack(JSON.parse(data));
+        }, function reject(reason) {
+            console.log('algo salio mal');
+            console.log(reason);
+        });
+    },
+
+    /**
+     *
+     * @param callBack
+     */
+    getCountDocuments(callBack){
+        var dataRequest = {value: 'count(*)'};
+        var array = [dataRequest];
+
+        var request = call.managerData(array);
+
+        var data = {
+            dataPutRequest: request,
+            type: 'select',
+            resultNumber: '',
+            section: 'alldocuments',
+            condition: '',
+            order:''
+        };
+
+        var object = {
+            type: post,
+            crossDomain: true,
+            url: urlQueriesManager,
+            data: JSON.stringify(data)
+        };
+
+        this.ajax(object).then(function resolve(data) {
+            var number=JSON.parse(data);
+            // console.log(number[0][0]);
+            callBack(number[0][0]);
         }, function reject(reason) {
             console.log('algo salio mal');
             console.log(reason);
@@ -232,9 +276,9 @@ var call = {
             object.data= JSON.stringify(dataInsert);
 
             call.ajax(object).then(function resolve(resolve) {
+                callBack(resolve);
                console.log(resolve);
                 dataInsert=dataInserEmpty;
-                callBack(resolve);
             }, function reject(reason) {
                 console.log('Something is wrong');
                 console.log(reason);
@@ -287,7 +331,8 @@ var call = {
                 object.data=JSON.stringify(dataInsert);
 
                 call.ajax(object).then(function resolve(resolve) {
-                    console.log(resolve);
+                    call.getDocuments(callBack);
+                    // console.log(resolve);
                 }, function reject(reason) {
                     console.log('Something is wrong');
                     console.log(reason);
@@ -299,6 +344,7 @@ var call = {
 
 
     },
+
 
     /**
      *

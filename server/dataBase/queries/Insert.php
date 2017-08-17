@@ -60,7 +60,7 @@ class Insert
         $insertValues = $this->getMarkQuestionValues($dataPut,$pieces);
 
         $query= "insert into mandmin.".$section.' ('.$fields.') '." values (".$insertValues.")";
-         echo $query;
+//         echo $query;
 
         $i=1;
         try{
