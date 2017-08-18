@@ -56,7 +56,6 @@ class Delete
         $deleteValues = substr( $values , 0 , -1);
 
         $query= "delete from mandmin.".$section." where ".$condition;
-
         try{
 
             $stmt = $conn->getConnection()->prepare($query);

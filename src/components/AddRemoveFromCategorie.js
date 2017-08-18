@@ -33,7 +33,7 @@ export default class AddRemoveFromCategorie extends Component{
         $('select').material_select();
     }
     componentDidMount(){
-        api.call.getCategories(this.getCatList);
+        api.call.getCategories(this.getCatList,null,null);
     }
 
     handleChange(){
@@ -51,9 +51,13 @@ export default class AddRemoveFromCategorie extends Component{
         let arrayDocs= this.props.selectedDocuments;
         let arrayCats=$('select').val();
         let callBack=this.props.newFiles;
-        apiDelete.delete.deleteFromCategories(arrayDocs,arrayCats,callBack);
+        apiDelete.delete.deleteFromCategories(arrayDocs,arrayCats,api.call.getDocuments,callBack);
         this.getCatList(this.state.categoriesList);
     }
+
+
+
+
 
 
     render(){
@@ -68,9 +72,9 @@ export default class AddRemoveFromCategorie extends Component{
                 </select>
             </div>
                 <a className="waves-effect waves-light btn"
-                   onClick={(e)=this.handleClick}>Añadir a categorias</a>
+                   onClick={(e)=>this.handleClick()}>Añadir a categorias</a>
                 <a className="waves-effect waves-light btn"
-                   onClick={(e)=>this.deleteFromCategorie}>Eliminar de categorias</a>
+                   onClick={(e)=>this.deleteFromCategorie()}>Eliminar de categorias</a>
 
             </div>
         );

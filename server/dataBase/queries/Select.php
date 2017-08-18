@@ -69,7 +69,7 @@ class Select
             $stmt = $conn->getConnection()->prepare($query);
             $stmt->execute();
             $datos = $stmt->fetchAll();
-            echo $jsonData = json_encode($datos); ;
+            echo $jsonData = json_encode($datos);
 //            while( $datos = $stmt->fetch() ){
 //                array_push($array,$datos);
 //                echo $datos['categorie'] . '<br />';

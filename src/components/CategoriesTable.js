@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import apiDelete from '../../apis/apiDelete';
+import Pagination from './Pagination';
 import uid from 'uid';
 
 export default class CategoriesTable extends Component{
@@ -15,6 +16,10 @@ export default class CategoriesTable extends Component{
     render(){
         return(
             <div className="view_categories">
+                <Pagination  stateFinalDocuments={this.props.changeCategoriesTableState}
+                             index={3}
+                             section={'categories'}
+                />
                 <table className="responsive-table">
                     <thead>
                     <tr>

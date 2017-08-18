@@ -52,14 +52,13 @@ export default class FileListTable extends Component{
     }
 
 
-
-
-    handleChange(event,idFile){
+    handleChange(event,idFile,path){
 
 
         if(event.target.checked){
             var object={
-                fileId:event.target.id
+                fileId:event.target.id,
+                filePath:path
             };
             array.push(object);
             this.currentCheckState(false,event.target.value);
@@ -97,7 +96,10 @@ export default class FileListTable extends Component{
 
         return (
             <div className="">
-                <Pagination  stateFinalDocuments={this.props.stateFinalDocuments}/>
+                <Pagination  stateFinalDocuments={this.props.stateFinalDocuments}
+                             index={6}
+                             section={'documents'}
+                />
                 <table className="responsive-table">
                     <thead>
                     <tr>
@@ -116,7 +118,7 @@ export default class FileListTable extends Component{
                             <td>
                                 <input type="checkbox" id={entry.id}
                                        value={index}
-                                       onChange={(e)=>this.handleChange(e,entry.id)}
+                                       onChange={(e)=>this.handleChange(e,entry.id,entry.path)}
                                        checked={this.state.isChecked===this.state.isCheckedAux[index]}
                                 />
                                 <label htmlFor={entry.id}></label>
@@ -127,7 +129,11 @@ export default class FileListTable extends Component{
                     )}
                     </tbody>
                 </table>
-                <Pagination  stateFinalDocuments={this.props.stateFinalDocuments}/>
+                <Pagination
+                    stateFinalDocuments={this.props.stateFinalDocuments}
+                    index={6}
+                    section={'documents'}
+                />
             </div>
         );
     }

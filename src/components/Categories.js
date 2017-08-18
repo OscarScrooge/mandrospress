@@ -31,7 +31,7 @@ export default class Categories extends Component{
     }
 
     componentDidMount(){
-        api.call.getCategories(this.changeCategoriesTableState);
+        api.call.getCategories(this.changeCategoriesTableState,this.props.limit,this.props.offset);
         $('.err').hide();
     }
 
@@ -64,7 +64,10 @@ export default class Categories extends Component{
                     </form>
                 </div>
                 <div className="col s12 m8 l8">
-                    <CategoriesTable categories={this.state.entriesCategoriesTable} deleteCategorieClick={this.deletedCategorie}/>
+                    <CategoriesTable
+                        categories={this.state.entriesCategoriesTable}
+                        changeCategoriesTableState={this.changeCategoriesTableState}
+                        deleteCategorieClick={this.deletedCategorie}/>
                 </div>
             </div>
         );

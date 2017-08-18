@@ -7,6 +7,7 @@ import UploadFiles from "./UploadFiles";
 import AddRemoveFromCategories from "./AddRemoveFromCategorie";
 import FileListTable from "./FileListTable";
 import api from "../../apis/api";
+import apiDelete from "../../apis/apiDelete";
 import $ from "jquery";
 
 export default class Documents extends Component {
@@ -26,6 +27,8 @@ export default class Documents extends Component {
         this.stateFinalDocuments = this.stateFinalDocuments.bind(this);
         this.changeStateSelectedFilesList= this.changeStateSelectedFilesList.bind(this);
         this.stateDocsWithCategories=this.stateDocsWithCategories.bind(this);
+        this.deleteDocument=this.deleteDocument.bind(this);
+
     }
 
     changeStateDocuments(documents) {
@@ -75,6 +78,12 @@ export default class Documents extends Component {
         api.call.getDocuments(this.stateFinalDocuments,6,0);
     }
 
+    deleteDocument(){
+        let arrayDocs= this.state.selectedFiles;
+        let callBack=this.stateDocsWithCategories;
+        apiDelete.delete.deleteDocuments(arrayDocs,api.call.getDocuments,callBack);
+    }
+
     render() {
 
         return (
@@ -96,7 +105,7 @@ export default class Documents extends Component {
                                    stateFinalDocuments={this.stateFinalDocuments}
 
                     />
-                    <a className="waves-effect waves-light btn">Eliminar documento</a>
+                    <a className="waves-effect waves-light btn" onClick={(e)=>this.deleteDocument()}>Eliminar documento</a>
                 </div>
 
                 <div>

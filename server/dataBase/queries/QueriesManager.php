@@ -57,7 +57,7 @@ class QueriesManager
             case 'insert':
 
                 $this->insert(strtolower($this->getType()),
-                    strtolower($this->getDataPutRequest()),
+                    $this->getDataPutRequest(),
                     strtolower($this->getResultNumber()),
                     strtolower($this->getSection()),
                     strtolower($this->getFields())

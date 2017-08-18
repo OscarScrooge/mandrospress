@@ -108,7 +108,9 @@ var call = {
      *
      * @param callBack
      */
-    getCategories: function (callBack) {
+    getCategories: function (callBack,limit,offset) {
+
+        var resultNumber=(limit===null && offset===null?  '': 'limit '+limit+' offset '+offset);
 
         var dataRequest = {value: '*'};
         var array = [dataRequest];
@@ -118,7 +120,7 @@ var call = {
         var data = {
             dataPutRequest: request,
             type: 'select',
-            resultNumber: '',
+            resultNumber: resultNumber,
             section: 'categories',
             condition: '',
             order:'order by id desc'
@@ -168,9 +170,9 @@ var call = {
             url: urlQueriesManager,
             data: JSON.stringify(data)
         };
-
-        this.ajax(object).then(function resolve(data) {
-            // console.log(data);
+        console.log(object);
+        call.ajax(object).then(function resolve(data) {
+            console.log("getDocs "+data);
             callBack(JSON.parse(data));
         }, function reject(reason) {
             console.log('algo salio mal');
@@ -183,6 +185,7 @@ var call = {
      * @param callBack
      */
     getCountDocuments(callBack){
+
         var dataRequest = {value: 'count(*)'};
         var array = [dataRequest];
 
@@ -193,6 +196,43 @@ var call = {
             type: 'select',
             resultNumber: '',
             section: 'alldocuments',
+            condition: '',
+            order:''
+        };
+
+        var object = {
+            type: post,
+            crossDomain: true,
+            url: urlQueriesManager,
+            data: JSON.stringify(data)
+        };
+
+        this.ajax(object).then(function resolve(data) {
+            var number=JSON.parse(data);
+            // console.log(number[0][0]);
+            callBack(number[0][0]);
+        }, function reject(reason) {
+            console.log('algo salio mal');
+            console.log(reason);
+        });
+    },
+
+    /**
+     *
+     * @param callBack
+     */
+    getCountCategories: function (callBack) {
+
+        var dataRequest = {value: 'count(*)'};
+        var array = [dataRequest];
+
+        var request = call.managerData(array);
+
+        var data = {
+            dataPutRequest: request,
+            type: 'select',
+            resultNumber: '',
+            section: 'categories',
             condition: '',
             order:''
         };
@@ -276,8 +316,8 @@ var call = {
             object.data= JSON.stringify(dataInsert);
 
             call.ajax(object).then(function resolve(resolve) {
+                console.log(resolve);
                 callBack(resolve);
-               console.log(resolve);
                 dataInsert=dataInserEmpty;
             }, function reject(reason) {
                 console.log('Something is wrong');
@@ -286,7 +326,7 @@ var call = {
 
         });
         $('.progress').hide();
-        call.getDocuments(callBack);
+        call.getDocuments(callBack,6,0);
     },
     /**
      *
@@ -331,7 +371,7 @@ var call = {
                 object.data=JSON.stringify(dataInsert);
 
                 call.ajax(object).then(function resolve(resolve) {
-                    call.getDocuments(callBack);
+                    call.getDocuments(callBack,6,0);
                     // console.log(resolve);
                 }, function reject(reason) {
                     console.log('Something is wrong');
